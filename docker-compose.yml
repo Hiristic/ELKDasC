@@ -1,0 +1,51 @@
+# Docker Compose file for ELK stack
+
+# Build 
+# Not possible to build this container with docker-compose v>1.
+# Dont build unless forced pull image from Dockerhub and extend with functionality
+
+version: '3.5'
+
+services:
+  elk:
+    image: docker.io/sebp/elk:latest
+    environment:
+      EZ: 'Europe/Stockholm'
+      ES_HEAP_SIZE: '2g'
+      CLUSTER_NAME: 'Heuristic-cluster'
+      MAX_OPEN_FILES: '262144' #min '65536'
+    container_name: elk-container
+    ports:
+      - target: 9200
+        published: 9200
+      - target: 9300
+        published: 9300
+      - target: 5601
+        published: 5601
+      - target: 5044
+        published: 5044
+    volumes:
+#    - type: bind
+#      source: '/local/elasticsearch'    # Persistent index storage on disk
+#      target: '/var/lib/elasticsearch'
+#      read_only: false
+#    - type: bind
+#      source: '${PWD}/logstash-conf/'
+#      target: '/etc/logstash/conf.d/'
+#      read_only: false
+    - type: bind
+      source: '${PWD}/kibana-conf/'
+      target: '/opt/kibana/config/'
+      read_only: false
+    - type: bind
+      source: '${PWD}/elasticsearch.yml'
+      target: '/etc/elasticsearch/elasticsearch.yml'
+      read_only: false
+    networks:
+    - heuristic-network
+    tty: true
+networks:
+  heuristic-network:
+    external: true
+# To run on a custom network run the command below and set external to true. Otherwise a unique network will be created for this container
+# docker network create heuristic-network
