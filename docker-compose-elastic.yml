@@ -1,3 +1,9 @@
+# Docker Compose file for ELK stack
+
+# Build 
+# Not possible to build this container with docker-compose v>1.
+# Dont build unless forced pull image from Dockerhub and extend with functionality
+
 version: '3.5'
 
 services:
@@ -21,24 +27,7 @@ services:
       read_only: false
 #    - type: bind
 #      source: '${PWD}/elasticsearch.yml'
-#      target: '/etc/elasticsearch/elasticsearch.yml' # Not needed all params can be inputed using Env args
-#      read_only: false
-    networks:
-    - heuristic-network
-    tty: true
-
-  kibana:
-    image: docker.io/elastic/kibana:7.9.3
-    environment:
-      ELASTICSEARCH_HOSTS: 'http://172.17.0.1:9200'
-    container_name: kibana
-    ports:
-      - target: 5601
-        published: 5601
-#    volumes:
-#    - type: bind
-#      source: '${PWD}/kibana.yml'
-#      target: '/usr/share/kibana/config/kibana.yml'  # Not needed all params can be inputed using Env args
+#      target: '/etc/elasticsearch/elasticsearch.yml'
 #      read_only: false
     networks:
     - heuristic-network

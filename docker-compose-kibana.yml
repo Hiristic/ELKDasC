@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  kibana:
+    image: docker.io/elastic/kibana:7.9.3
+    environment:
+      #elasticsearch.hosts: 'http://172.17.0.1:9200' # Not working for some reason
+      ELASTICSEARCH_HOSTS: 'http://172.17.0.1:9200'
+    container_name: kibana
+    ports:
+      - target: 5601
+        published: 5601
+#    volumes:
+#    - type: bind
+#      source: '${PWD}/kibana.yml'
+#      target: '/usr/share/kibana/config/kibana.yml'  # Not needed all params can be inputed using Env args
+#      read_only: false
+    networks:
+    - heuristic-network
+    tty: true
+networks:
+  heuristic-network:
+    external: true
+# To run on a custom network run the command below and set external to true. Otherwise a unique network will be created for this container
+# docker network create -d bridge heuristic-network

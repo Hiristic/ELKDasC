@@ -1,0 +1,20 @@
+version: '3.5'
+
+services:
+  search:
+    image: docker.elastic.co/enterprise-search/enterprise-search:7.9.3
+    environment:
+      #elasticsearch.hosts: 'http://172.17.0.1:9200'
+      ELASTICSEARCH_HOSTS: 'http://172.17.0.1:9200'
+    container_name: search
+    ports:
+      - target: 3002
+        published: 3002
+    networks:
+    - heuristic-network
+    tty: true
+networks:
+  heuristic-network:
+    external: true
+# To run on a custom network run the command below and set external to true. Otherwise a unique network will be created for this container
+# docker network create -d bridge heuristic-network
